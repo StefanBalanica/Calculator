@@ -1,0 +1,250 @@
+﻿<Window x:Class="Calculator_VAR2.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Calculator_VAR2" d:DataContext="{d:DesignInstance Type=local:Number}"
+        mc:Ignorable="d"
+        Title="Calculator" Height="700" Width="410"
+         WindowStyle="None" 
+        AllowsTransparency="True" 
+        Background="Transparent"
+        Icon="image/Windows_Calculator_icon.ico">
+
+    <Window.Resources>
+        <local:Number x:Key="Number"/>
+        <local:NumberFormatConverter x:Key="NumberFormatConverter"/>
+        <Style x:Key="ButtonMemoryStyle" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Foreground" Value="#FFFFFF"/>
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="5">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#2D3437"/>
+                    <Setter Property="Foreground" Value="#FFFFFF"/>
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Background" Value="#272829"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="ButtonStyleFunctions" TargetType="Button">
+            <Setter Property="Background" Value="#323232"/>
+            <Setter Property="BorderBrush" Value="#202020"/>
+            <Setter Property="BorderThickness" Value="1.5"/>
+            <Setter Property="Foreground" Value="#FFFFFF"/>
+            <Setter Property="FontSize" Value="17"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="{TemplateBinding BorderThickness}" 
+                                CornerRadius="5">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#3B3B3B"/>
+                    <Setter Property="Foreground" Value="#FFFFFF"/>
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Background" Value="#272829"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="ButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="#3B3B3B"/>
+            <Setter Property="BorderBrush" Value="#202020"/>
+            <Setter Property="BorderThickness" Value="1.5"/>
+            <Setter Property="Foreground" Value="#FFFFFF"/>
+            <Setter Property="FontSize" Value="17"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="{TemplateBinding BorderThickness}" 
+                                CornerRadius="5">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#323232"/>
+                    <Setter Property="Foreground" Value="#FFFFFF"/>
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Background" Value="#272829"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="ButtonStyleEgal" TargetType="Button">
+            <Setter Property="Background" Value="#F38064"/>
+            <Setter Property="BorderBrush" Value="#202020"/>
+            <Setter Property="BorderThickness" Value="1.5"/>
+            <Setter Property="Foreground" Value="#272829"/>
+            <Setter Property="FontSize" Value="17"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="{TemplateBinding BorderThickness}" 
+                                CornerRadius="5">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#DD765E"/>
+                    <Setter Property="Foreground" Value="#272829"/>
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Background" Value="#272829"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+    <Border Background="#FF202020" CornerRadius="8" BorderThickness="0.5" BorderBrush="White">
+        <Grid Margin="4,4,4,4" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="#FF202020">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0" Panel.ZIndex="0" Grid.Column="0" Background="#FF202020" Height="32"
+      VerticalAlignment="Top" MouseLeftButtonDown="TitleBar_MouseDown">
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <Image Source="image/Windows_Calculator_icon.ico" Height="20" Width="20" Margin="8,0,5,0"/>
+                    <TextBlock Text="Calculator" Foreground="White" FontSize="14" VerticalAlignment="Center"/>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button Click="Minimize_Click" ToolTip="Minimize" Background="Transparent" BorderThickness="0" Padding="8" Width="33">
+                        <TextBlock Text="-" FontSize="18" Foreground="White"/>
+                    </Button>
+                    <Button Click="Maximize_Click" ToolTip="Maximize" Background="Transparent" BorderThickness="0" Padding="8">
+                        <TextBlock Text="□" FontSize="15" Foreground="White"/>
+                    </Button>
+                    <Button Click="Close_Click" ToolTip="Close" Background="Transparent" BorderThickness="0" Padding="8">
+                        <TextBlock Text="✖" FontSize="10" Foreground="White"/>
+                    </Button>
+                </StackPanel>
+            </Grid>
+
+            <Rectangle x:Name="Overlay"
+           Fill="Black"
+           Opacity="0.5"
+           Visibility="Collapsed"
+           Panel.ZIndex="1"
+           Grid.RowSpan="3"
+           MouseDown="Window_MouseDown"/>
+            <Grid x:Name="Number_Form" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Button x:Name="ButtonMenu" Grid.Row="0"  Content="☰" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="41" Width="52" FontSize="25" Style="{StaticResource ButtonMemoryStyle}"/>
+                <Label Content="Standard"  Grid.Row="0" HorizontalAlignment="Left" Height="auto" Margin="62,9,0,0" VerticalAlignment="Top" Width="auto" FontSize="25" Foreground="White" />
+                <TextBlock x:Name="TextBlock_Suma" Grid.Row="1" HorizontalAlignment="Right" Height="auto"  TextWrapping="Wrap" Text="{Binding ecuation, Converter={StaticResource NumberFormatConverter}}" VerticalAlignment="Bottom" Width="auto"  TextAlignment="Right" FontSize="24" Foreground="#a5a6a6" Visibility="Hidden"/>
+                <TextBlock x:Name="TextBlock_Numere" Margin="0, 0, 0 35" Grid.Row="2" HorizontalAlignment="Right" Height="auto"  TextWrapping="Wrap" Text="{Binding Nr_crt, Converter={StaticResource NumberFormatConverter}}" VerticalAlignment="Top" Width="auto" LineHeight="7" TextAlignment="Right" FontSize="48" Foreground="White"/>
+            </Grid>
+            <Grid x:Name="Grid_Butom_Memorie" Panel.ZIndex="0" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+                <Button Content="MC" Grid.Column="0"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{StaticResource ButtonMemoryStyle}"/>
+                <Button Content="MR" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{StaticResource ButtonMemoryStyle}"/>
+                <Button Content="M+"  Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{StaticResource ButtonMemoryStyle}"/>
+                <Button Content="M-" Grid.Column="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{StaticResource ButtonMemoryStyle}"/>
+                <Button Content="MS" Grid.Column="4" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{StaticResource ButtonMemoryStyle}"/>
+                <Button Content="Mv"  Grid.Column="4" Style="{StaticResource ButtonMemoryStyle}" Grid.ColumnSpan="2" Margin="67,0,0,0" Height="20" VerticalAlignment="Top" Click="Button_Click_2"/>
+            </Grid>
+            <Grid x:Name="Standard_Keyboard_Grid" Panel.ZIndex="0" Margin="1.5,1.5,1.5,1.5" Grid.Row="3" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Button x:Name="Button_procent" Grid.Row="0" Grid.Column="0" Content="%" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{StaticResource ButtonStyleFunctions}" Click="Button_procent_Click"/>
+                <Button x:Name="Button_CE" Grid.Row="0" Grid.Column="1" Content="CE" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{StaticResource ButtonStyleFunctions}" Click="Button_CE_Click"/>
+                <Button x:Name="Button_C" Grid.Row="0" Grid.Column="2" Content="C" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{StaticResource ButtonStyleFunctions}" Click="Button_C_Click"/>
+                <Button x:Name="Button_Stergere" Grid.Row="0" Grid.Column="3" Content="⌫" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{StaticResource ButtonStyleFunctions}" Click="Button_Stergere_Click"/>
+                <Button x:Name="Button_1slashX" Grid.Row="1" Grid.Column="0" Content="1/x" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{StaticResource ButtonStyleFunctions}"/>
+                <Button x:Name="Button_xPatrat" Grid.Row="1" Grid.Column="1" Content="x²" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{StaticResource ButtonStyleFunctions}" Click="Button_xPatrat_Click"/>
+                <Button x:Name="Button_Radical" Grid.Row="1" Grid.Column="2" Content="²√x." HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{StaticResource ButtonStyleFunctions}" Click="Button_Radical_Click"/>
+                <Button x:Name="Button_Impartire" Grid.Row="1" Grid.Column="3" Content="÷" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{StaticResource ButtonStyleFunctions}" Click="Button_Impartire_Click"/>
+                <Button x:Name="Button_7" Grid.Row="2" Grid.Column="0" Content="7" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{StaticResource ButtonStyle}" Click="Button_7_Click"/>
+                <Button x:Name="Button_8" Grid.Row="2" Grid.Column="1" Content="8" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{StaticResource ButtonStyle}" Click="Button_8_Click"/>
+                <Button x:Name="Button_9" Grid.Row="2" Grid.Column="2" Content="9" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{StaticResource ButtonStyle}" Click="Button_9_Click"/>
+                <Button x:Name="Button_Inmultire" Grid.Row="2" Grid.Column="3" Content="×" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{StaticResource ButtonStyleFunctions}" Click="Button_Inmultire_Click"/>
+                <Button x:Name="Button_4" Grid.Row="3" Grid.Column="0" Content="4" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{StaticResource ButtonStyle}" Click="Button_Click"/>
+                <Button x:Name="Button_5" Grid.Row="3" Grid.Column="1" Content="5" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{StaticResource ButtonStyle}" Click="Button_Click_1"/>
+                <Button x:Name="Button_6" Grid.Row="3" Grid.Column="2" Content="6" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{StaticResource ButtonStyle}" Click="Button_6_Click"/>
+                <Button x:Name="Button_Minus" Grid.Row="3" Grid.Column="3" Content="-" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{StaticResource ButtonStyleFunctions}" Click="Button_Minus_Click"/>
+                <Button x:Name="Button_1" Grid.Row="4" Grid.Column="0" Content="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{StaticResource ButtonStyle}" Click="Button_1_Click"/>
+                <Button x:Name="Button_2" Grid.Row="4" Grid.Column="1" Content="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{StaticResource ButtonStyle}" Click="Button_2_Click"/>
+                <Button x:Name="Button_3" Grid.Row="4" Grid.Column="2" Content="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{StaticResource ButtonStyle}" Click="Button_3_Click"/>
+                <Button x:Name="Button_plus" Grid.Row="4" Grid.Column="3" Content="+" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{StaticResource ButtonStyleFunctions}" Click="Button_plus_Click"/>
+                <Button x:Name="Button_PlusMinus" Grid.Row="5" Grid.Column="0" Content="+/-" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{StaticResource ButtonStyle}" Click="Button_PlusMinus_Click"/>
+                <Button x:Name="Button_0" Grid.Row="5" Grid.Column="1" Content="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{StaticResource ButtonStyle}" Click="Button_0_Click"/>
+                <Button x:Name="Button_Virgula" Grid.Row="5" Grid.Column="2" Content="," HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{StaticResource ButtonStyle}" Click="Button_Virgula_Click"/>
+                <Button x:Name="Button_Egal" Grid.Row="5" Grid.Column="3" Content="=" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{StaticResource ButtonStyleEgal}" Click="Button_Egal_Click"/>
+
+            </Grid>
+            <Grid x:Name="Memory_Grid" Panel.ZIndex="3" Margin="1.5,1.5,1.5,1.5"
+      Grid.Row="3" Grid.Column="0" HorizontalAlignment="Stretch" 
+      VerticalAlignment="Stretch" Background="Red" Visibility="Visible"
+      RenderTransformOrigin="0.5,1">
+                <Grid.RenderTransform>
+                    <TranslateTransform x:Name="GridTransform" Y="200"/>
+                </Grid.RenderTransform>
+                <Border Background="LightGray" BorderBrush="Black" BorderThickness="2">
+                    <TextBlock Text="Grid Animat" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </Border>
+            </Grid>
+        </Grid>
+    </Border>
+
+</Window>
