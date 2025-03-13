@@ -33,6 +33,7 @@ namespace Calculator_VAR2
         char anteLastOp;
         double Nr_Here = 0;
         private bool isGridVisible = false;
+        string[] myArray = new string[0];
         public MainWindow()
         {
             
@@ -44,17 +45,17 @@ namespace Calculator_VAR2
         }
         private void ShowGridAnimation()
         {
-            // Animație pentru grid (de jos în sus)
+            
             DoubleAnimation moveUp = new DoubleAnimation
             {
-                From = 200, // Poziția inițială (jos)
-                To = 0,     // Poziția finală (sus)
-                Duration = TimeSpan.FromSeconds(0.5),
+                From = 400, 
+                To = 0,  
+                Duration = TimeSpan.FromSeconds(0.3),
                 EasingFunction = new QuadraticEase { EasingMode = EasingMode.EaseOut }
             };
             GridTransform.BeginAnimation(TranslateTransform.YProperty, moveUp);
 
-            // Fade-in pentru overlay
+
             Overlay.Visibility = Visibility.Visible;
             DoubleAnimation fadeIn = new DoubleAnimation
             {
@@ -66,18 +67,17 @@ namespace Calculator_VAR2
         }
         private void HideGridAnimation()
         {
-            // Animație pentru grid (de sus în jos)
+  
             DoubleAnimation moveDown = new DoubleAnimation
             {
                 From = 0,
-                To = 200,
-                Duration = TimeSpan.FromSeconds(0.5),
+                To = 400,
+                Duration = TimeSpan.FromSeconds(0.3),
                 EasingFunction = new QuadraticEase { EasingMode = EasingMode.EaseIn }
             };
             moveDown.Completed += (s, e) => Memory_Grid.Visibility = Visibility.Hidden;
             GridTransform.BeginAnimation(TranslateTransform.YProperty, moveDown);
 
-            // Fade-out pentru overlay
             DoubleAnimation fadeOut = new DoubleAnimation
             {
                 From = 0.5,
@@ -91,10 +91,34 @@ namespace Calculator_VAR2
         }
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            // Ascundem grid-ul doar dacă este vizibil și dacă apăsăm în afara lui
             if (isGridVisible && !Memory_Grid.IsMouseOver)
             {
                 HideGridAnimation();
+                Scoll.Visibility = Visibility.Hidden;
+            }
+        }
+        private void PopulateGrid(string[] values)
+        {
+            Memory_Grid.Children.Clear();
+            Memory_Grid.RowDefinitions.Clear();
+
+            for (int i = 0; i < values.Length; i++)
+            {
+                Memory_Grid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+
+                TextBlock textBox = new TextBlock
+                {
+                    Text = values[i],
+                    FontSize = 40,
+                    Margin = new Thickness(0),
+                    Foreground = Brushes.White,
+                    Background = Brushes.Transparent,
+                    TextAlignment = TextAlignment.Right,
+                    //IsReadOnly = false,
+                };
+
+                Grid.SetRow(textBox, i);
+                Memory_Grid.Children.Add(textBox);
             }
         }
         private void GlobalKeyDown(object sender, KeyEventArgs e)
@@ -663,7 +687,20 @@ namespace Calculator_VAR2
                 ShowGridAnimation();
                 isGridVisible = true;
                 Memory_Grid.Visibility=Visibility.Visible;
+                Scoll.Visibility=Visibility.Visible;
             }
+        }
+
+        private void Button_Click_3(object sender, RoutedEventArgs e)
+        {
+            myArray[0] = (int.Parse(myArray[0]) + Nr_crt).ToString();
+            PopulateGrid(myArray);
+        }
+
+        private void Ms_Button_Click(object sender, RoutedEventArgs e)
+        {
+            myArray = new[] { Nr_crt.ToString() }.Concat(myArray).ToArray();
+            PopulateGrid(myArray);
         }
     }
 }

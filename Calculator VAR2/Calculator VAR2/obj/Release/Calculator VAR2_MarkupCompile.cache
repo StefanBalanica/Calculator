@@ -4,11 +4,11 @@
 winexe
 C#
 .cs
-D:\github\Calculator\Calculator VAR2\Calculator VAR2\obj\Debug\
+D:\github\Calculator\Calculator VAR2\Calculator VAR2\obj\Release\
 Calculator_VAR2
 none
 false
-DEBUG;TRACE
+TRACE
 D:\github\Calculator\Calculator VAR2\Calculator VAR2\App.xaml
 1219584333
 
@@ -16,5 +16,5 @@ D:\github\Calculator\Calculator VAR2\Calculator VAR2\App.xaml
 13-1310406943
 MainWindow.xaml;
 
-False
+True
 
