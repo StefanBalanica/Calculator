@@ -20,9 +20,7 @@ using static System.Net.Mime.MediaTypeNames;
 
 namespace Calculator_VAR2
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
+  
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
         double Nr_crt;
@@ -41,6 +39,7 @@ namespace Calculator_VAR2
             this.DataContext = new Number { Nr_crt = 0 };
             Nr_crt = 0;
             EventManager.RegisterClassHandler(typeof(UIElement), UIElement.KeyDownEvent, new KeyEventHandler(GlobalKeyDown));
+           
 
         }
         private void ShowGridAnimation()
@@ -48,7 +47,7 @@ namespace Calculator_VAR2
             
             DoubleAnimation moveUp = new DoubleAnimation
             {
-                From = 400, 
+                From = 200, 
                 To = 0,  
                 Duration = TimeSpan.FromSeconds(0.3),
                 EasingFunction = new QuadraticEase { EasingMode = EasingMode.EaseOut }
@@ -67,17 +66,15 @@ namespace Calculator_VAR2
         }
         private void HideGridAnimation()
         {
-  
             DoubleAnimation moveDown = new DoubleAnimation
             {
                 From = 0,
-                To = 400,
-                Duration = TimeSpan.FromSeconds(0.3),
+                To = 200,
+                Duration = TimeSpan.FromSeconds(1.3),
                 EasingFunction = new QuadraticEase { EasingMode = EasingMode.EaseIn }
             };
-            moveDown.Completed += (s, e) => Memory_Grid.Visibility = Visibility.Hidden;
             GridTransform.BeginAnimation(TranslateTransform.YProperty, moveDown);
-
+            moveDown.Completed += (s, e) => Memory_Grid.Visibility = Visibility.Hidden;
             DoubleAnimation fadeOut = new DoubleAnimation
             {
                 From = 0.5,
@@ -89,6 +86,7 @@ namespace Calculator_VAR2
 
             isGridVisible = false;
         }
+
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (isGridVisible && !Memory_Grid.IsMouseOver)
@@ -114,7 +112,6 @@ namespace Calculator_VAR2
                     Foreground = Brushes.White,
                     Background = Brushes.Transparent,
                     TextAlignment = TextAlignment.Right,
-                    //IsReadOnly = false,
                 };
 
                 Grid.SetRow(textBox, i);
@@ -686,21 +683,68 @@ namespace Calculator_VAR2
             {
                 ShowGridAnimation();
                 isGridVisible = true;
-                Memory_Grid.Visibility=Visibility.Visible;
+               //Memory_Grid.Visibility=Visibility.Visible;
                 Scoll.Visibility=Visibility.Visible;
             }
         }
 
         private void Button_Click_3(object sender, RoutedEventArgs e)
         {
-            myArray[0] = (int.Parse(myArray[0]) + Nr_crt).ToString();
+            ///button M+
+            try
+            {
+                if (Nr_crt==0)
+                {
+                    myArray[0] = (int.Parse(myArray[0]) +  (DataContext as Number).sum).ToString();
+                }
+                else
+                {
+                    myArray[0] = (int.Parse(myArray[0]) + Nr_crt).ToString();
+                }
             PopulateGrid(myArray);
+            }
+            catch { }
         }
 
         private void Ms_Button_Click(object sender, RoutedEventArgs e)
         {
+            if (Nr_crt==0)
+            {
+                myArray = new[] { (DataContext as Number).sum.ToString() }.Concat(myArray).ToArray();
+            }
+            else
+            {
             myArray = new[] { Nr_crt.ToString() }.Concat(myArray).ToArray();
+            }
             PopulateGrid(myArray);
+        }
+
+        private void Button_M__Minus_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (Nr_crt==0)
+                {
+                    myArray[0] = (int.Parse(myArray[0]) -  (DataContext as Number).sum).ToString();
+                }
+                else
+                {
+                    myArray[0] = (int.Parse(myArray[0]) - Nr_crt).ToString();
+                }
+                PopulateGrid(myArray);
+            }
+            catch { }
+        }
+
+        private void Button_Click_4(object sender, RoutedEventArgs e)
+        {
+            myArray = new string[0];
+            PopulateGrid(myArray);
+        }
+        private void Button_Click_5(object sender, RoutedEventArgs e)
+        {
+            Nr_crt=int.Parse(myArray[0]);
+            (DataContext as Number).Nr_crt=Nr_crt;
         }
     }
 }

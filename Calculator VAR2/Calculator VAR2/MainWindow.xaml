@@ -185,12 +185,12 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto"/>
                 </Grid.RowDefinitions>
-                <Button Content="MC" Grid.Column="0"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{StaticResource ButtonMemoryStyle}"/>
-                <Button Content="MR" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{StaticResource ButtonMemoryStyle}"/>
-                <Button Content="M+"  Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{StaticResource ButtonMemoryStyle}" Click="Button_Click_3"/>
-                <Button Content="M-" Grid.Column="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{StaticResource ButtonMemoryStyle}"/>
+                <Button x:Name="Button_mc" Content="MC" Grid.Column="0"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{StaticResource ButtonMemoryStyle}" Click="Button_Click_4"/>
+                <Button x:Name="Button_mr" Content="MR" Grid.Column="1" Style="{StaticResource ButtonMemoryStyle}" Grid.ColumnSpan="2" Margin="0,0,67,0" Height="20" VerticalAlignment="Top"/>
+                <Button x:Name="Button_m_plus" Content="M+"  Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{StaticResource ButtonMemoryStyle}" Click="Button_Click_3"/>
+                <Button x:Name="Button_M__Minus" Content="M-" Grid.Column="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{StaticResource ButtonMemoryStyle}" Click="Button_M__Minus_Click"/>
                 <Button x:Name="Ms_Button" Content="MS" Grid.Column="4" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{StaticResource ButtonMemoryStyle}" Click="Ms_Button_Click"/>
-                <Button Content="Mv"  Grid.Column="4" Style="{StaticResource ButtonMemoryStyle}" Grid.ColumnSpan="2" Margin="67,0,0,0" Height="20" VerticalAlignment="Top" Click="Button_Click_2"/>
+                <Button x:Name="Button_mv" Content="Mv"  Grid.Column="4" Style="{StaticResource ButtonMemoryStyle}" Grid.ColumnSpan="2" Margin="67,0,0,0" Height="20" VerticalAlignment="Top" Click="Button_Click_2"/>
             </Grid>
             <Grid x:Name="Standard_Keyboard_Grid" Panel.ZIndex="0" Margin="1.5,1.5,1.5,1.5" Grid.Row="3" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                 <Grid.RowDefinitions>
@@ -234,9 +234,9 @@
 
             </Grid>
             <ScrollViewer x:Name="Scoll" Panel.ZIndex="3" Margin="1.5,1.5,1.5,1.5" Grid.Row="3" Grid.Column="0" VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Disabled" Visibility="Hidden">
-                <Grid x:Name="Memory_Grid" Panel.ZIndex="3" Margin="1.5,1.5,1.5,1.5" Grid.Row="3" Grid.Column="0" HorizontalAlignment="Stretch"  VerticalAlignment="Stretch" Background="#202020" Visibility="Hidden" RenderTransformOrigin="0.5,1">
+                <Grid x:Name="Memory_Grid" Panel.ZIndex="3" Margin="1.5,1.5,1.5,1.5" Grid.Row="3" Grid.Column="0" HorizontalAlignment="Stretch"  VerticalAlignment="Stretch" Background="#202020" Visibility="Visible" RenderTransformOrigin="1,1">
                     <Grid.RenderTransform>
-                        <TranslateTransform x:Name="GridTransform" Y="200"/>
+                        <TranslateTransform x:Name="GridTransform" Y="400"/>
                     </Grid.RenderTransform>
                     <Border Background="#202020">
                     </Border>
