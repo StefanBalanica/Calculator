@@ -54,6 +54,29 @@ namespace Calculator_VAR2
                 NotifyPropertyChanged("ecuation");
             }
         }
+        private string[] _myArray; 
+        public string[] myArray
+        {
+            get
+            {
+                return _myArray;
+            }
+            set
+            {
+                _myArray = value;
+                NotifyPropertyChanged(nameof(myArray)); 
+            }
+        }
+
+
+        private bool _isButtonEnabled;
+        public bool IsButtonEnabled
+        {
+            get
+            {
+                return myArray != null && myArray.Length > 0 && !string.IsNullOrWhiteSpace(myArray[0]);
+            }
+        }
 
         public event PropertyChangedEventHandler PropertyChanged;
         public void NotifyPropertyChanged(string propertyName)
@@ -63,4 +86,5 @@ namespace Calculator_VAR2
                new PropertyChangedEventArgs(propertyName));
         }
     }
+
 }

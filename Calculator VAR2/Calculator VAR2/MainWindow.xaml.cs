@@ -23,15 +23,64 @@ namespace Calculator_VAR2
   
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
+        private CalculatorLogic calculator = new CalculatorLogic();
+        private MemoryManager memoryManager = new MemoryManager();
+
+        public event PropertyChangedEventHandler PropertyChanged;
         double Nr_crt;
         char lastOp ='0';
         bool isMoreThanOnce = false;
         double mpy;
         bool isComaActive = false;
-        char anteLastOp;
-        double Nr_Here = 0;
         private bool isGridVisible = false;
         string[] myArray = new string[0];
+
+        public MainWindow()
+        {
+            InitializeComponent();
+            this.DataContext = new Number();
+        }
+
+        private void Button_Number_Click(object sender, RoutedEventArgs e)
+        {
+            DataContext= calculator.DataContext;
+            if (calculator.lastOp=='0')
+            {
+                (DataContext as Number).sum=0;
+                TextBlock_Suma.Visibility=Visibility.Hidden;
+            }
+            string numberText = (sender as Button).Content.ToString();
+            double value = double.Parse(numberText);
+            calculator.Scrie_Nr(value, isComaActive, ref mpy);
+        }
+        private void Button_Operation_Click(object sender, RoutedEventArgs e)
+        {
+            DataContext= calculator.DataContext;
+            char operation = (sender as Button).Content.ToString()[0];
+            calculator.Calcul(operation, (DataContext as Number).Nr_crt);
+            (DataContext as Number).ecuation=(DataContext as Number).sum.ToString() +operation;
+            isMoreThanOnce= false;
+            isComaActive= false;
+            TextBlock_Suma.Visibility=Visibility.Visible;
+        }
+
+        private void Button_Predef_Click(object sender, RoutedEventArgs e)
+        {
+            DataContext= calculator.DataContext;
+            string symbol = (sender as Button).Content.ToString();
+            calculator.Predefinit(symbol, (DataContext as Number).Nr_crt);
+            isMoreThanOnce= false;
+            isComaActive= false;
+            TextBlock_Suma.Visibility=Visibility.Visible;
+        }
+        private void Button_Egal_Click(object sender, RoutedEventArgs e)
+        {
+            calculator.Egal(ref isMoreThanOnce, ref isComaActive);
+            calculator.Reset();
+            DataContext= calculator.DataContext;
+        }
+        /*
+
         public MainWindow()
         {
             
@@ -39,9 +88,7 @@ namespace Calculator_VAR2
             this.DataContext = new Number { Nr_crt = 0 };
             Nr_crt = 0;
             EventManager.RegisterClassHandler(typeof(UIElement), UIElement.KeyDownEvent, new KeyEventHandler(GlobalKeyDown));
-           
-
-        }
+        }*/
         private void ShowGridAnimation()
         {
             
@@ -197,11 +244,6 @@ namespace Calculator_VAR2
             }
             e.Handled = true;
         }
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
         private void TitleBar_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.LeftButton == MouseButtonState.Pressed)
@@ -211,406 +253,15 @@ namespace Calculator_VAR2
         {
             this.WindowState = WindowState.Minimized;
         }
-
         private void Maximize_Click(object sender, RoutedEventArgs e)
         {
             this.WindowState = (this.WindowState == WindowState.Maximized) ? WindowState.Normal : WindowState.Maximized;
         }
-
         private void Close_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
         }
-        private void TextBlock_Numere_PreviewTextInput(object sender, System.Windows.Input.TextCompositionEventArgs e)
-        {
-            e.Handled = !IsNumeric(e.Text);
-        }
-
-        private bool IsNumeric(string text)
-        {
-            double result;
-            return double.TryParse(text, out result);
-        }
-        private void Button_0_Click(object sender, RoutedEventArgs e)
-        {
-            if (lastOp=='0')
-            {
-                (DataContext as Number).sum=0;
-                TextBlock_Suma.Visibility=Visibility.Hidden;
-            }
-          
-                Nr_crt= Nr_crt*10;
-            isMoreThanOnce= false;
-            (DataContext as Number).Nr_crt=Nr_crt;
-        }
-
-        private void Button_1_Click(object sender, RoutedEventArgs e)
-        {
-            if (lastOp=='0')
-            {
-                (DataContext as Number).sum=0;
-                TextBlock_Suma.Visibility=Visibility.Hidden;
-            }
-            if (isComaActive)
-            {
-                Nr_crt+=1 *mpy;
-                mpy/=10;
-            }
-            else
-            {
-                Nr_crt= Nr_crt*10+1;
-            }
-            isMoreThanOnce= false;
-            (DataContext as Number).Nr_crt=Nr_crt;
-        }
-
-        private void Button_2_Click(object sender, RoutedEventArgs e)
-        {
-            if (lastOp == '0')
-            {
-                (DataContext as Number).sum = 0;
-                TextBlock_Suma.Visibility = Visibility.Hidden;
-            }
-            if (isComaActive)
-            {
-                Nr_crt+=2 *mpy;
-                mpy/=10;
-            }
-            else
-            {
-                Nr_crt= Nr_crt*10+2;
-            }
-            isMoreThanOnce= false;
-            (DataContext as Number).Nr_crt=Nr_crt;
-        }
-
-        private void Button_3_Click(object sender, RoutedEventArgs e)
-        {
-            if (lastOp == '0')
-            {
-                (DataContext as Number).sum = 0;
-                TextBlock_Suma.Visibility = Visibility.Hidden;
-            }
-            if (isComaActive)
-            {
-                Nr_crt+=3 *mpy;
-                mpy/=10;
-            }
-            else
-            {
-                Nr_crt= Nr_crt*10+3;
-            }
-            isMoreThanOnce= false;
-            (DataContext as Number).Nr_crt=Nr_crt;
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            //button 4
-            if (lastOp=='0')
-            {
-                (DataContext as Number).sum=0;
-                TextBlock_Suma.Visibility=Visibility.Hidden;
-            }
-            if (isComaActive)
-            {
-                Nr_crt+=4 *mpy;
-                mpy/=10;
-            }
-            else
-            {
-            Nr_crt= Nr_crt*10+4;
-            }
-            isMoreThanOnce= false;
-            (DataContext as Number).Nr_crt=Nr_crt;
-        }
-
-        private void Button_Click_1(object sender, RoutedEventArgs e)
-        {
-            //button 5
-            if (lastOp == '0')
-            {
-                (DataContext as Number).sum = 0;
-                TextBlock_Suma.Visibility = Visibility.Hidden;
-            }
-            if (isComaActive)
-            {
-                Nr_crt+=5 *mpy;
-                mpy/=10;
-            }
-            else
-            {
-                Nr_crt= Nr_crt*10+5;
-            }
-            isMoreThanOnce= false;
-            (DataContext as Number).Nr_crt=Nr_crt;
-        }
-
-        private void Button_6_Click(object sender, RoutedEventArgs e)
-        {
-            if (lastOp == '0')
-            {
-                (DataContext as Number).sum = 0;
-                TextBlock_Suma.Visibility = Visibility.Hidden;
-            }
-            if (isComaActive)
-            {
-                Nr_crt+=6 *mpy;
-                mpy/=10;
-            }
-            else
-            {
-                Nr_crt= Nr_crt*10+6;
-            }
-            isMoreThanOnce= false;
-            (DataContext as Number).Nr_crt=Nr_crt;
-        }
-
-        private void Button_7_Click(object sender, RoutedEventArgs e)
-        {
-            if (lastOp == '0')
-            {
-                (DataContext as Number).sum = 0;
-                TextBlock_Suma.Visibility = Visibility.Hidden;
-            }
-            if (isComaActive)
-            {
-                Nr_crt+=7 *mpy;
-                mpy/=10;
-            }
-            else
-            {
-                Nr_crt= Nr_crt*10+7;
-            }
-            isMoreThanOnce= false;
-            (DataContext as Number).Nr_crt=Nr_crt;
-        }
-
-        private void Button_8_Click(object sender, RoutedEventArgs e)
-        {
-            if (lastOp=='0')
-            {
-                (DataContext as Number).sum=0;
-                TextBlock_Suma.Visibility=Visibility.Hidden;
-            }
-            if (isComaActive)
-            {
-                Nr_crt+=8*mpy;
-                mpy/=10;
-            }
-            else
-            {
-                Nr_crt= Nr_crt*10+8;
-            }
-            isMoreThanOnce= false;
-            (DataContext as Number).Nr_crt=Nr_crt;
-        }
-
-        private void Button_9_Click(object sender, RoutedEventArgs e)
-        {
-            if (lastOp=='0')
-            {
-                (DataContext as Number).sum=0;
-                TextBlock_Suma.Visibility=Visibility.Hidden;
-            }
-            if (isComaActive)
-            {
-                Nr_crt+=9 *mpy;
-                mpy/=10;
-            }
-            else
-            {
-                Nr_crt= Nr_crt*10+9;
-            }
-            isMoreThanOnce= false;
-            (DataContext as Number).Nr_crt=Nr_crt;
-        }
-
-        private void ButtonMenu_Click(object sender, RoutedEventArgs e)
-        {
-            
-        }
-
-        private void Button_plus_Click(object sender, RoutedEventArgs e)
-        {
-            switch (lastOp)
-            {
-                case '0':
-                    (DataContext as Number).sum=  (DataContext as Number).sum+=Nr_crt;
-                    break;
-                case '+':
-                    (DataContext as Number).sum=  (DataContext as Number).sum+=Nr_crt;
-                    break;
-                case '-':
-                    (DataContext as Number).sum=  (DataContext as Number).sum-=Nr_crt;
-                    break;
-                case '*':
-                    (DataContext as Number).sum=  (DataContext as Number).sum*=Nr_crt;
-                    break;
-                case '/':
-                    (DataContext as Number).sum=  (DataContext as Number).sum/=Nr_crt;
-                    break;
-            }
-            lastOp='+';
-            (DataContext as Number).ecuation=(DataContext as Number).sum.ToString() +"+";
-            Nr_crt=0;
-            isMoreThanOnce= false;
-            isComaActive= false;
-            TextBlock_Suma.Visibility=Visibility.Visible;
-        }
-
-        private void Button_Minus_Click(object sender, RoutedEventArgs e)
-        {
-            switch (lastOp)
-            {
-                case '0':
-                    (DataContext as Number).sum=  (DataContext as Number).sum+=Nr_crt;
-                    break;
-                case '+':
-                    (DataContext as Number).sum=  (DataContext as Number).sum+=Nr_crt;
-                    break;
-                case '-':
-                    (DataContext as Number).sum=  (DataContext as Number).sum-=Nr_crt;
-                    break;
-                case '*':
-                    (DataContext as Number).sum=  (DataContext as Number).sum*=Nr_crt;
-                    break;
-                case '/':
-                    (DataContext as Number).sum=  (DataContext as Number).sum/=Nr_crt;
-                    break;
-            }
-            lastOp='-';
-            (DataContext as Number).ecuation=(DataContext as Number).sum.ToString() +"-";
-            Nr_crt=0;
-            isMoreThanOnce= false;
-            isComaActive= false;
-            TextBlock_Suma.Visibility=Visibility.Visible;
-        }
-
-        private void Button_Inmultire_Click(object sender, RoutedEventArgs e)
-        {
-            switch (lastOp)
-            {
-                case '0':
-                    (DataContext as Number).sum=  (DataContext as Number).sum+=Nr_crt;
-                    break;
-                case '+':
-                    (DataContext as Number).sum=  (DataContext as Number).sum+=Nr_crt;
-                    break;
-                case '-':
-                    (DataContext as Number).sum=  (DataContext as Number).sum-=Nr_crt;
-                    break;
-                case '*':
-                    (DataContext as Number).sum=  (DataContext as Number).sum*=Nr_crt;
-                    break;
-                case '/':
-                    (DataContext as Number).sum=  (DataContext as Number).sum/=Nr_crt;
-                    break;
-            }
-            lastOp='*';
-            (DataContext as Number).ecuation=(DataContext as Number).sum.ToString() +"×";
-            Nr_crt=0;
-            isMoreThanOnce= false;
-            isComaActive= false;
-            TextBlock_Suma.Visibility=Visibility.Visible;
-
-        }
-
-        private void Button_Impartire_Click(object sender, RoutedEventArgs e)
-        {
-            switch (lastOp)
-            {
-                case '0':
-                    (DataContext as Number).sum=  (DataContext as Number).sum+=Nr_crt;
-                    break;
-                case '+':
-                    (DataContext as Number).sum=  (DataContext as Number).sum+=Nr_crt;
-                    break;
-                case '-':
-                    (DataContext as Number).sum=  (DataContext as Number).sum-=Nr_crt;
-                    break;
-                case '*':
-                    (DataContext as Number).sum=  (DataContext as Number).sum*=Nr_crt;
-                    break;
-                case '/':
-                    (DataContext as Number).sum=  (DataContext as Number).sum/=Nr_crt;
-                    break;
-            }
-            lastOp='/';
-            (DataContext as Number).ecuation=(DataContext as Number).sum.ToString() +"÷";
-            Nr_crt=0;
-            isMoreThanOnce= false;
-            isComaActive= false;
-            TextBlock_Suma.Visibility=Visibility.Visible;
-        }
-        private void Button_Egal_Click(object sender, RoutedEventArgs e)
-        {
-            switch (lastOp)
-            {
-                case '0':
-                    (DataContext as Number).sum=  (DataContext as Number).sum+=Nr_crt;
-                    break;
-                case '+':
-                    (DataContext as Number).sum=  (DataContext as Number).sum+=Nr_crt;
-                    break;
-                case '-':
-                    (DataContext as Number).sum=  (DataContext as Number).sum-=Nr_crt;
-                    break;
-                case '*':
-                    (DataContext as Number).sum=  (DataContext as Number).sum*=Nr_crt;
-                    break;
-                case '/':
-                    (DataContext as Number).sum=  (DataContext as Number).sum/=Nr_crt;
-                    break;
-            }
-            if (!isMoreThanOnce)
-            {
-            (DataContext as Number).ecuation=(DataContext as Number).ecuation  + Nr_crt.ToString() +"=";
-               isMoreThanOnce=true;
-                anteLastOp=lastOp;
-                Nr_Here = Nr_crt;
-            }
-            else
-            {
-                string[] parts = new string[0]; 
-
-
-                switch (anteLastOp)
-            {
-                case '0':
-                    (DataContext as Number).sum=  (DataContext as Number).sum+=Nr_Here;
-                    break;
-                case '+':
-                    (DataContext as Number).sum=  (DataContext as Number).sum+=Nr_Here;
-                        parts = (DataContext as Number).ecuation.Split('+');
-                        break;
-                case '-':
-                    (DataContext as Number).sum=  (DataContext as Number).sum-=Nr_Here;
-                        parts = (DataContext as Number).ecuation.Split('-');
-                        break;
-                case '*':
-                    (DataContext as Number).sum=  (DataContext as Number).sum*=Nr_Here;
-                        parts = (DataContext as Number).ecuation.Split('×');
-                        break;
-                case '/':
-                    (DataContext as Number).sum=  (DataContext as Number).sum/=Nr_Here;
-                        parts = (DataContext as Number).ecuation.Split('÷');
-                        break;
-            }
-                if (parts.Length > 1)
-                {
-                    (DataContext as Number).ecuation = (DataContext as Number).sum.ToString() +anteLastOp+ parts[1];
-                    parts = new string[0];
-                }
-            }
-
-            lastOp='0';
-            (DataContext as Number).Nr_crt=(DataContext as Number).sum;
-            Nr_crt=0;
-            isComaActive=false;
-            TextBlock_Suma.Visibility=Visibility.Visible;
-        }
-
+     
         private void Button_Stergere_Click(object sender, RoutedEventArgs e)
         {
             Nr_crt=Math.Floor(Nr_crt / 10);
@@ -626,6 +277,8 @@ namespace Calculator_VAR2
             Nr_crt=0;
             isMoreThanOnce= false;
             (DataContext as Number).Nr_crt=Nr_crt;
+            calculator.Reset();
+            DataContext= calculator.DataContext;
         }
 
         private void Button_CE_Click(object sender, RoutedEventArgs e)
@@ -635,36 +288,7 @@ namespace Calculator_VAR2
             (DataContext as Number).Nr_crt=Nr_crt;
         }
 
-        private void Button_procent_Click(object sender, RoutedEventArgs e)
-        {
-            double aux;
-            aux = ((DataContext as Number).sum * Nr_crt)/100;
-            Nr_crt = aux;
-            isMoreThanOnce= false;
-            (DataContext as Number).ecuation= (DataContext as Number).ecuation + Nr_crt.ToString();
-            (DataContext as Number).Nr_crt=Nr_crt;
-        }
-
-        private void Button_xPatrat_Click(object sender, RoutedEventArgs e)
-        {
-            double aux = Nr_crt;
-            Nr_crt*=Nr_crt;
-            isMoreThanOnce= false;
-            TextBlock_Suma.Visibility=Visibility.Visible;
-            (DataContext as Number).ecuation= (DataContext as Number).ecuation +"sqrt(" +aux+")";
-            (DataContext as Number).Nr_crt=Nr_crt;
-        }
-
-        private void Button_Radical_Click(object sender, RoutedEventArgs e)
-        {
-            double aux = Nr_crt;
-            Nr_crt=Math.Sqrt(Nr_crt);
-            isMoreThanOnce= false;
-            TextBlock_Suma.Visibility=Visibility.Visible;
-            (DataContext as Number).ecuation= (DataContext as Number).ecuation +"√" +aux;
-            (DataContext as Number).Nr_crt=Nr_crt;
-        }
-
+        
         private void Button_Virgula_Click(object sender, RoutedEventArgs e)
         {
             isComaActive=true;
@@ -701,9 +325,13 @@ namespace Calculator_VAR2
                 {
                     myArray[0] = (int.Parse(myArray[0]) + Nr_crt).ToString();
                 }
+            (DataContext as Number).myArray = myArray;
             PopulateGrid(myArray);
             }
             catch { }
+            Button_mr.IsEnabled= (DataContext as Number).IsButtonEnabled;
+            Button_mc.IsEnabled= (DataContext as Number).IsButtonEnabled;
+            Button_mv.IsEnabled= (DataContext as Number).IsButtonEnabled;
         }
 
         private void Ms_Button_Click(object sender, RoutedEventArgs e)
@@ -716,7 +344,11 @@ namespace Calculator_VAR2
             {
             myArray = new[] { Nr_crt.ToString() }.Concat(myArray).ToArray();
             }
+             (DataContext as Number).myArray = myArray;
             PopulateGrid(myArray);
+            Button_mr.IsEnabled= (DataContext as Number).IsButtonEnabled;
+            Button_mc.IsEnabled= (DataContext as Number).IsButtonEnabled;
+            Button_mv.IsEnabled= (DataContext as Number).IsButtonEnabled;
         }
 
         private void Button_M__Minus_Click(object sender, RoutedEventArgs e)
@@ -731,17 +363,27 @@ namespace Calculator_VAR2
                 {
                     myArray[0] = (int.Parse(myArray[0]) - Nr_crt).ToString();
                 }
+                 (DataContext as Number).myArray = myArray;
                 PopulateGrid(myArray);
             }
             catch { }
+            Button_mr.IsEnabled= (DataContext as Number).IsButtonEnabled;
+            Button_mc.IsEnabled= (DataContext as Number).IsButtonEnabled;
+            Button_mv.IsEnabled= (DataContext as Number).IsButtonEnabled;
         }
 
         private void Button_Click_4(object sender, RoutedEventArgs e)
         {
+            ///button MC
             myArray = new string[0];
+            (DataContext as Number).myArray = myArray;
             PopulateGrid(myArray);
+            Button_mr.IsEnabled= (DataContext as Number).IsButtonEnabled;
+            Button_mc.IsEnabled= (DataContext as Number).IsButtonEnabled;
+            Button_mv.IsEnabled= (DataContext as Number).IsButtonEnabled;
         }
-        private void Button_Click_5(object sender, RoutedEventArgs e)
+
+        private void Button_mr_Click(object sender, RoutedEventArgs e)
         {
             Nr_crt=int.Parse(myArray[0]);
             (DataContext as Number).Nr_crt=Nr_crt;
