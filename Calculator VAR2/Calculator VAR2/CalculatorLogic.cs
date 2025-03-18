@@ -20,6 +20,9 @@ namespace Calculator_VAR2
 
         public void Calcul(char symbol, double value)
         {
+         
+                Nr_crt = value;
+            
             switch (lastOp)
             {
                 case '0':
@@ -79,9 +82,11 @@ namespace Calculator_VAR2
 
             }
         }
-        public void Egal(ref bool isMoreThanOnce, ref bool isComaActive)
+        public void Egal(ref bool isMoreThanOnce, ref bool isComaActive, double value)
         {
-
+            Nr_crt = value;
+            if (!isMoreThanOnce)
+            {
             switch (lastOp)
             {
                 case '0':
@@ -100,8 +105,6 @@ namespace Calculator_VAR2
                     (DataContext as Number).sum=  (DataContext as Number).sum/=Nr_crt;
                     break;
             }
-            if (!isMoreThanOnce)
-            {
                 (DataContext as Number).ecuation=(DataContext as Number).ecuation  + Nr_crt.ToString() +"=";
                 isMoreThanOnce=true;
                 anteLastOp=lastOp;
@@ -110,6 +113,7 @@ namespace Calculator_VAR2
             else
             {
                 string[] parts = new string[0];
+                string oldsum = (DataContext as Number).sum.ToString();
                 switch (anteLastOp)
                 {
                     case '0':
@@ -134,7 +138,7 @@ namespace Calculator_VAR2
                 }
                 if (parts.Length > 1)
                 {
-                    (DataContext as Number).ecuation = (DataContext as Number).sum.ToString() +anteLastOp+ parts[1];
+                    (DataContext as Number).ecuation = oldsum +anteLastOp+ parts[1];
                     parts = new string[0];
                 }
             }

@@ -25,6 +25,8 @@ namespace Calculator_VAR2
     {
         private CalculatorLogic calculator = new CalculatorLogic();
         private MemoryManager memoryManager = new MemoryManager();
+        private AnimationHelper animationHelper = new AnimationHelper();
+        private Number sharedNumber = new Number();
 
         public event PropertyChangedEventHandler PropertyChanged;
         double Nr_crt;
@@ -33,12 +35,14 @@ namespace Calculator_VAR2
         double mpy;
         bool isComaActive = false;
         private bool isGridVisible = false;
-        string[] myArray = new string[0];
 
         public MainWindow()
         {
             InitializeComponent();
             this.DataContext = new Number();
+            calculator.DataContext = sharedNumber;
+            memoryManager.DataContext = sharedNumber;
+            DataContext = sharedNumber;
         }
 
         private void Button_Number_Click(object sender, RoutedEventArgs e)
@@ -55,9 +59,9 @@ namespace Calculator_VAR2
         }
         private void Button_Operation_Click(object sender, RoutedEventArgs e)
         {
-            DataContext= calculator.DataContext;
             char operation = (sender as Button).Content.ToString()[0];
             calculator.Calcul(operation, (DataContext as Number).Nr_crt);
+            DataContext= calculator.DataContext;
             (DataContext as Number).ecuation=(DataContext as Number).sum.ToString() +operation;
             isMoreThanOnce= false;
             isComaActive= false;
@@ -75,63 +79,30 @@ namespace Calculator_VAR2
         }
         private void Button_Egal_Click(object sender, RoutedEventArgs e)
         {
-            calculator.Egal(ref isMoreThanOnce, ref isComaActive);
-            calculator.Reset();
+            calculator.Egal(ref isMoreThanOnce, ref isComaActive, (DataContext as Number).Nr_crt);
             DataContext= calculator.DataContext;
+           // calculator.Reset();
         }
-        /*
 
-        public MainWindow()
-        {
-            
-            InitializeComponent();
-            this.DataContext = new Number { Nr_crt = 0 };
-            Nr_crt = 0;
-            EventManager.RegisterClassHandler(typeof(UIElement), UIElement.KeyDownEvent, new KeyEventHandler(GlobalKeyDown));
-        }*/
+        
         private void ShowGridAnimation()
         {
-            
-            DoubleAnimation moveUp = new DoubleAnimation
-            {
-                From = 200, 
-                To = 0,  
-                Duration = TimeSpan.FromSeconds(0.3),
-                EasingFunction = new QuadraticEase { EasingMode = EasingMode.EaseOut }
-            };
-            GridTransform.BeginAnimation(TranslateTransform.YProperty, moveUp);
+           AnimationHelper.ShowGridAnimation(Memory_Grid, GridTransform);
+           Overlay.Visibility = Visibility.Visible;
 
-
-            Overlay.Visibility = Visibility.Visible;
-            DoubleAnimation fadeIn = new DoubleAnimation
-            {
-                From = 0,
-                To = 0.5,
-                Duration = TimeSpan.FromSeconds(0.3)
-            };
-            Overlay.BeginAnimation(UIElement.OpacityProperty, fadeIn);
+           DoubleAnimation fadeIn = new DoubleAnimation(0, 0.5, TimeSpan.FromSeconds(0.3));
+           Overlay.BeginAnimation(UIElement.OpacityProperty, fadeIn);
+           isGridVisible = true;
         }
         private void HideGridAnimation()
         {
-            DoubleAnimation moveDown = new DoubleAnimation
-            {
-                From = 0,
-                To = 200,
-                Duration = TimeSpan.FromSeconds(1.3),
-                EasingFunction = new QuadraticEase { EasingMode = EasingMode.EaseIn }
-            };
-            GridTransform.BeginAnimation(TranslateTransform.YProperty, moveDown);
-            moveDown.Completed += (s, e) => Memory_Grid.Visibility = Visibility.Hidden;
-            DoubleAnimation fadeOut = new DoubleAnimation
-            {
-                From = 0.5,
-                To = 0,
-                Duration = TimeSpan.FromSeconds(0.3)
-            };
-            fadeOut.Completed += (s, e) => Overlay.Visibility = Visibility.Collapsed;
-            Overlay.BeginAnimation(UIElement.OpacityProperty, fadeOut);
+          AnimationHelper.HideGridAnimation(Memory_Grid, GridTransform);
 
-            isGridVisible = false;
+          DoubleAnimation fadeOut = new DoubleAnimation(0.5, 0, TimeSpan.FromSeconds(0.3));
+          fadeOut.Completed += (s, e) => Overlay.Visibility = Visibility.Collapsed;
+          Overlay.BeginAnimation(UIElement.OpacityProperty, fadeOut);
+
+          isGridVisible = false;
         }
 
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
@@ -142,18 +113,17 @@ namespace Calculator_VAR2
                 Scoll.Visibility = Visibility.Hidden;
             }
         }
-        private void PopulateGrid(string[] values)
-        {
+        private void PopulateGrid(List<double> values) { 
             Memory_Grid.Children.Clear();
             Memory_Grid.RowDefinitions.Clear();
 
-            for (int i = 0; i < values.Length; i++)
+            for (int i = 0; i < values.Count; i++)
             {
                 Memory_Grid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
 
                 TextBlock textBox = new TextBlock
                 {
-                    Text = values[i],
+                    Text = values[i].ToString(),
                     FontSize = 40,
                     Margin = new Thickness(0),
                     Foreground = Brushes.White,
@@ -165,6 +135,7 @@ namespace Calculator_VAR2
                 Memory_Grid.Children.Add(textBox);
             }
         }
+
         private void GlobalKeyDown(object sender, KeyEventArgs e)
         {
             if (e.Handled) return;
@@ -264,8 +235,9 @@ namespace Calculator_VAR2
      
         private void Button_Stergere_Click(object sender, RoutedEventArgs e)
         {
-            Nr_crt=Math.Floor(Nr_crt / 10);
-            (DataContext as Number).Nr_crt=Nr_crt;
+            Nr_crt=(DataContext as Number).Nr_crt;
+               double nr= Math.Floor(Nr_crt / 10);
+            (DataContext as Number).Nr_crt=nr;
             isMoreThanOnce= false;
         }
 
@@ -295,12 +267,6 @@ namespace Calculator_VAR2
             mpy=0.1;
         }
 
-        private void Button_PlusMinus_Click(object sender, RoutedEventArgs e)
-        {
-            Nr_crt*=-1;
-            (DataContext as Number).Nr_crt=Nr_crt;
-        }
-
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
             if (!isGridVisible)
@@ -312,81 +278,16 @@ namespace Calculator_VAR2
             }
         }
 
-        private void Button_Click_3(object sender, RoutedEventArgs e)
+        private void Button_Memory_click(object sender, RoutedEventArgs e)
         {
-            ///button M+
-            try
-            {
-                if (Nr_crt==0)
-                {
-                    myArray[0] = (int.Parse(myArray[0]) +  (DataContext as Number).sum).ToString();
-                }
-                else
-                {
-                    myArray[0] = (int.Parse(myArray[0]) + Nr_crt).ToString();
-                }
-            (DataContext as Number).myArray = myArray;
-            PopulateGrid(myArray);
-            }
-            catch { }
+            string symbol = (sender as Button).Content.ToString();
+            memoryManager.MemoryClick(symbol, (DataContext as Number).Nr_crt);
+            DataContext = memoryManager.DataContext;
+            PopulateGrid((DataContext as Number).MemoryValues);
             Button_mr.IsEnabled= (DataContext as Number).IsButtonEnabled;
             Button_mc.IsEnabled= (DataContext as Number).IsButtonEnabled;
             Button_mv.IsEnabled= (DataContext as Number).IsButtonEnabled;
-        }
 
-        private void Ms_Button_Click(object sender, RoutedEventArgs e)
-        {
-            if (Nr_crt==0)
-            {
-                myArray = new[] { (DataContext as Number).sum.ToString() }.Concat(myArray).ToArray();
-            }
-            else
-            {
-            myArray = new[] { Nr_crt.ToString() }.Concat(myArray).ToArray();
-            }
-             (DataContext as Number).myArray = myArray;
-            PopulateGrid(myArray);
-            Button_mr.IsEnabled= (DataContext as Number).IsButtonEnabled;
-            Button_mc.IsEnabled= (DataContext as Number).IsButtonEnabled;
-            Button_mv.IsEnabled= (DataContext as Number).IsButtonEnabled;
-        }
-
-        private void Button_M__Minus_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                if (Nr_crt==0)
-                {
-                    myArray[0] = (int.Parse(myArray[0]) -  (DataContext as Number).sum).ToString();
-                }
-                else
-                {
-                    myArray[0] = (int.Parse(myArray[0]) - Nr_crt).ToString();
-                }
-                 (DataContext as Number).myArray = myArray;
-                PopulateGrid(myArray);
-            }
-            catch { }
-            Button_mr.IsEnabled= (DataContext as Number).IsButtonEnabled;
-            Button_mc.IsEnabled= (DataContext as Number).IsButtonEnabled;
-            Button_mv.IsEnabled= (DataContext as Number).IsButtonEnabled;
-        }
-
-        private void Button_Click_4(object sender, RoutedEventArgs e)
-        {
-            ///button MC
-            myArray = new string[0];
-            (DataContext as Number).myArray = myArray;
-            PopulateGrid(myArray);
-            Button_mr.IsEnabled= (DataContext as Number).IsButtonEnabled;
-            Button_mc.IsEnabled= (DataContext as Number).IsButtonEnabled;
-            Button_mv.IsEnabled= (DataContext as Number).IsButtonEnabled;
-        }
-
-        private void Button_mr_Click(object sender, RoutedEventArgs e)
-        {
-            Nr_crt=int.Parse(myArray[0]);
-            (DataContext as Number).Nr_crt=Nr_crt;
         }
     }
 }

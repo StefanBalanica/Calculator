@@ -9,7 +9,10 @@
          WindowStyle="None" 
         AllowsTransparency="True" 
         Background="Transparent"
-        Icon="image/Windows_Calculator_icon.ico">
+        Icon="image/Windows_Calculator_icon.ico" 
+        KeyDown="GlobalKeyDown"
+        PreviewKeyDown="GlobalKeyDown">
+
 
     <Window.Resources>
         <local:Number x:Key="Number"/>
@@ -192,11 +195,11 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto"/>
                 </Grid.RowDefinitions>
-                <Button x:Name="Button_mc" IsEnabled="{Binding IsButtonEnabled}" Content="MC" Grid.Column="0" Style="{StaticResource ButtonMemoryStyle}" Click="Button_Click_4" Grid.ColumnSpan="2" Margin="0,0,67,0" Height="20" VerticalAlignment="Top"/>
-                <Button x:Name="Button_mr" IsEnabled="{Binding IsButtonEnabled}" Content="MR" Grid.Column="1" Style="{StaticResource ButtonMemoryStyle}" Grid.ColumnSpan="2" Margin="0,0,67,0" Click="Button_mr_Click"/>
-                <Button x:Name="Button_m_plus" Content="M+"  Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{StaticResource ButtonMemoryStyle}" Click="Button_Click_3"/>
-                <Button x:Name="Button_M__Minus" Content="M-" Grid.Column="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{StaticResource ButtonMemoryStyle}" Click="Button_M__Minus_Click"/>
-                <Button x:Name="Ms_Button" Content="MS" Grid.Column="3" Style="{StaticResource ButtonMemoryStyle}" Click="Ms_Button_Click" Grid.ColumnSpan="2" Margin="65,0,0,0" Height="20" VerticalAlignment="Top"/>
+                <Button x:Name="Button_mc" IsEnabled="{Binding IsButtonEnabled}" Content="MC" Grid.Column="0" Style="{StaticResource ButtonMemoryStyle}" Click="Button_Memory_click" Grid.ColumnSpan="2" Margin="0,0,67,0" Height="20" VerticalAlignment="Top"/>
+                <Button x:Name="Button_mr" IsEnabled="{Binding IsButtonEnabled}" Content="MR" Grid.Column="1" Style="{StaticResource ButtonMemoryStyle}" Grid.ColumnSpan="2" Margin="0,0,67,0" Click="Button_Memory_click"/>
+                <Button x:Name="Button_m_plus" Content="M+"  Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{StaticResource ButtonMemoryStyle}" Click="Button_Memory_click"/>
+                <Button x:Name="Button_M__Minus" Content="M-" Grid.Column="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{StaticResource ButtonMemoryStyle}" Click="Button_Memory_click"/>
+                <Button x:Name="Ms_Button" Content="MS" Grid.Column="3" Style="{StaticResource ButtonMemoryStyle}" Click="Button_Memory_click" Grid.ColumnSpan="2" Margin="65,0,0,0" Height="20" VerticalAlignment="Top"/>
                 <Button x:Name="Button_mv" IsEnabled="{Binding IsButtonEnabled}" Content="Mv"  Grid.Column="4" Style="{StaticResource ButtonMemoryStyle}" Grid.ColumnSpan="2" Margin="67,0,0,0" Height="20" VerticalAlignment="Top" Click="Button_Click_2"/>
             </Grid>
             <Grid x:Name="Standard_Keyboard_Grid" Panel.ZIndex="0" Margin="1.5,1.5,1.5,1.5" Grid.Row="3" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
@@ -230,12 +233,12 @@
                 <Button x:Name="Button_5" Grid.Row="3" Grid.Column="1" Content="5" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{StaticResource ButtonStyle}" Click="Button_Number_Click"/>
                 <Button x:Name="Button_6" Grid.Row="3" Grid.Column="2" Content="6" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{StaticResource ButtonStyle}" Click="Button_Number_Click"/>
                 <Button x:Name="Button_Minus" Grid.Row="3" Grid.Column="3" Content="-" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{StaticResource ButtonStyleFunctions}" Click="Button_Operation_Click"/>
-                <Button x:Name="Button_1" Grid.Row="4" Grid.Column="0" Content="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{StaticResource ButtonStyle}" Click="Button_Number_Click"/>
+                <Button x:Name="Button_1"  Grid.Row="4" Grid.Column="0" Content="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{StaticResource ButtonStyle}" Click="Button_Number_Click"/>
                 <Button x:Name="Button_2" Grid.Row="4" Grid.Column="1" Content="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{StaticResource ButtonStyle}" Click="Button_Number_Click"/>
                 <Button x:Name="Button_3" Grid.Row="4" Grid.Column="2" Content="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{StaticResource ButtonStyle}" Click="Button_Number_Click"/>
                 <Button x:Name="Button_plus" Grid.Row="4" Grid.Column="3" Content="+" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{StaticResource ButtonStyleFunctions}" Click="Button_Operation_Click"/>
                 <Button x:Name="Button_PlusMinus" Grid.Row="5" Grid.Column="0" Content="+/-" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{StaticResource ButtonStyle}" Click="Button_Predef_Click"/>
-                <Button x:Name="Button_0" Grid.Row="5" Grid.Column="1" Content="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{StaticResource ButtonStyle}" Click="Button_Number_Click"/>
+                <Button x:Name="Button_0"  Grid.Row="5" Grid.Column="1" Content="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{StaticResource ButtonStyle}" Click="Button_Number_Click"/>
                 <Button x:Name="Button_Virgula" Grid.Row="5" Grid.Column="2" Content="," HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{StaticResource ButtonStyle}" Click="Button_Virgula_Click"/>
                 <Button x:Name="Button_Egal" Grid.Row="5" Grid.Column="3" Content="=" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{StaticResource ButtonStyleEgal}" Click="Button_Egal_Click"/>
 
