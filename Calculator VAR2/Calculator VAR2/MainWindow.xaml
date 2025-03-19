@@ -20,7 +20,7 @@
         <local:ButtonEnable x:Key="ButtonEnable"/>
         <Style x:Key="ButtonMemoryStyle" TargetType="Button">
             <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="Black"/>
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="Foreground" Value="#FFFFFF"/>
             <Setter Property="FontSize" Value="15"/>
@@ -145,7 +145,7 @@
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <Grid Grid.Row="0" Panel.ZIndex="0" Grid.Column="0" Background="#FF202020" Height="32"
+            <Grid x:Name="TitleBar" Grid.Row="0" Panel.ZIndex="7" Grid.Column="0" Background="#FF202020" Height="32"
       VerticalAlignment="Top" MouseLeftButtonDown="TitleBar_MouseDown">
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                     <Image Source="image/Windows_Calculator_icon.ico" Height="20" Width="20" Margin="8,0,5,0"/>
@@ -170,16 +170,16 @@
            Opacity="0.5"
            Visibility="Collapsed"
            Panel.ZIndex="1"
-           Grid.RowSpan="3"
+           Grid.RowSpan="4"
            MouseDown="Window_MouseDown"/>
-            <Grid x:Name="Number_Form" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <Grid x:Name="Number_Form"  Panel.ZIndex="4" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                <Button x:Name="ButtonMenu" Grid.Row="0"  Content="☰" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="41" Width="52" FontSize="25" Style="{StaticResource ButtonMemoryStyle}"/>
-                <Label Content="Standard"  Grid.Row="0" HorizontalAlignment="Left" Height="auto" Margin="62,9,0,0" VerticalAlignment="Top" Width="auto" FontSize="25" Foreground="White" />
+                    <Button x:Name="ButtonMenu" Grid.Row="0" Panel.ZIndex="4" Content="☰" HorizontalAlignment="Left" Margin="10,10,0,1" Width="52" FontSize="25" Style="{StaticResource ButtonMemoryStyle}" Click="ButtonMenu_Click"/>
+                    <Label x:Name="Label1" Content="Standard"  Panel.ZIndex="1"  Grid.Row="0" HorizontalAlignment="Left" Height="auto" Margin="62,9,0,0" VerticalAlignment="Top" Width="auto" FontSize="25" Foreground="White" />
                 <TextBlock x:Name="TextBlock_Suma" Grid.Row="1" HorizontalAlignment="Right" Height="auto"  TextWrapping="Wrap" Text="{Binding ecuation, Converter={StaticResource NumberFormatConverter}}" VerticalAlignment="Bottom" Width="auto"  TextAlignment="Right" FontSize="24" Foreground="#a5a6a6" Visibility="Hidden"/>
                 <TextBlock x:Name="TextBlock_Numere" Margin="0, 0, 0 35" Grid.Row="2" HorizontalAlignment="Right" Height="auto"  TextWrapping="Wrap" Text="{Binding Nr_crt, Converter={StaticResource NumberFormatConverter}}" VerticalAlignment="Top" Width="auto" LineHeight="7" TextAlignment="Right" FontSize="48" Foreground="White"/>
             </Grid>
@@ -244,7 +244,7 @@
 
             </Grid>
             <ScrollViewer x:Name="Scoll" Panel.ZIndex="3" Margin="1.5,1.5,1.5,1.5" Grid.Row="3" Grid.Column="0" VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Disabled" Visibility="Hidden">
-                <Grid x:Name="Memory_Grid" Panel.ZIndex="3" Margin="1.5,1.5,1.5,1.5" Grid.Row="3" Grid.Column="0" HorizontalAlignment="Stretch"  VerticalAlignment="Stretch" Background="#202020" Visibility="Visible" RenderTransformOrigin="1,1">
+                <Grid x:Name="Memory_Grid" Panel.ZIndex="3" Margin="1.5,1.5,1.5,1.5" Grid.Row="3" Grid.Column="0" HorizontalAlignment="Stretch"  VerticalAlignment="Stretch" Background="#202020" Visibility="Hidden" RenderTransformOrigin="1,1">
                     <Grid.RenderTransform>
                         <TranslateTransform x:Name="GridTransform" Y="400"/>
                     </Grid.RenderTransform>
@@ -252,6 +252,18 @@
                     </Border>
                 </Grid>
             </ScrollViewer>
+            <Grid x:Name="MenuGrid" Panel.ZIndex="3" Grid.RowSpan="4" Grid.Column="0" Margin="0, 30, 200 ,0" Height="700" Background="#FF202020" Width="205"  Visibility="Hidden" >
+                <Grid.RenderTransform>
+                    <TranslateTransform x:Name="GridTransform2" Y="0"/>
+                </Grid.RenderTransform>
+                <Label Content="About"  HorizontalAlignment="Center" Margin="0, 70, 0, 0" Foreground="White" FontSize="17"/>
+                <Label Content="Made by:"  HorizontalAlignment="Center" Margin="0, 100, 0, 0" Foreground="Wheat" FontSize="14"/>
+                <Label Content="Stefan Balanica"  HorizontalAlignment="Center" Margin="0, 120, 0, 0" Foreground="Wheat" FontSize="14"/>
+                <Label Content="10LF331"  HorizontalAlignment="Center" Margin="0, 140, 0, 0" Foreground="Wheat" FontSize="14"/>
+
+
+            </Grid>
+
         </Grid>
     </Border>
 

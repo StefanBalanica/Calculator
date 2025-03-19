@@ -23,12 +23,33 @@ namespace Calculator_VAR2
 
         public static void HideGridAnimation(UIElement element, TranslateTransform transform)
         {
-            DoubleAnimation moveDown = new DoubleAnimation(0, 200, TimeSpan.FromSeconds(1.3))
+            DoubleAnimation moveDown = new DoubleAnimation(0, 500, TimeSpan.FromSeconds(0.3))
             {
                 EasingFunction = new QuadraticEase { EasingMode = EasingMode.EaseIn }
             };
             transform.BeginAnimation(TranslateTransform.YProperty, moveDown);
             moveDown.Completed += (s, e) => element.Visibility = Visibility.Hidden;
         }
+
+        public static void ShowMenuAnimation(UIElement element, TranslateTransform transform)
+        {
+            DoubleAnimation moveRight = new DoubleAnimation(-100, 0, TimeSpan.FromSeconds(0.3))
+            {
+                EasingFunction = new QuadraticEase { EasingMode = EasingMode.EaseOut }
+            };
+            transform.BeginAnimation(TranslateTransform.XProperty, moveRight);
+            element.Visibility = Visibility.Visible;
+        }
+
+        public static void HideMenuAnimation(UIElement element, TranslateTransform transform)
+        {
+            DoubleAnimation moveLeft = new DoubleAnimation(0, -250, TimeSpan.FromSeconds(0.3))
+            {
+                EasingFunction = new QuadraticEase { EasingMode = EasingMode.EaseIn }
+            };
+            transform.BeginAnimation(TranslateTransform.XProperty, moveLeft);
+            moveLeft.Completed += (s, e) => element.Visibility = Visibility.Hidden;
+        }
+
     }
 }

@@ -17,6 +17,7 @@ using System.ComponentModel;
 using System.Globalization;
 using System.Threading;
 using static System.Net.Mime.MediaTypeNames;
+using System.Reflection.Emit;
 
 namespace Calculator_VAR2
 {
@@ -34,7 +35,8 @@ namespace Calculator_VAR2
         bool isMoreThanOnce = false;
         double mpy;
         bool isComaActive = false;
-        private bool isGridVisible = false;
+        private bool isGridVisible = false, isGridVisible2=false;
+
 
         public MainWindow()
         {
@@ -43,6 +45,7 @@ namespace Calculator_VAR2
             calculator.DataContext = sharedNumber;
             memoryManager.DataContext = sharedNumber;
             DataContext = sharedNumber;
+    
         }
 
         private void Button_Number_Click(object sender, RoutedEventArgs e)
@@ -94,6 +97,17 @@ namespace Calculator_VAR2
            Overlay.BeginAnimation(UIElement.OpacityProperty, fadeIn);
            isGridVisible = true;
         }
+        private void ShowMenuAnimation()
+        {
+            AnimationHelper.ShowMenuAnimation(MenuGrid, GridTransform2);
+            Overlay.Visibility = Visibility.Visible;
+
+            DoubleAnimation fadeIn = new DoubleAnimation(0, 0.5, TimeSpan.FromSeconds(0.3));
+            Overlay.BeginAnimation(UIElement.OpacityProperty, fadeIn);
+            Label1.Visibility=Visibility.Collapsed;
+            TextBlock_Numere.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#808080"));
+            isGridVisible2 = true;
+        }
         private void HideGridAnimation()
         {
           AnimationHelper.HideGridAnimation(Memory_Grid, GridTransform);
@@ -105,12 +119,26 @@ namespace Calculator_VAR2
           isGridVisible = false;
         }
 
+        private void HideMenuAnimation()
+        {
+            AnimationHelper.HideMenuAnimation(MenuGrid, GridTransform2);
+
+            DoubleAnimation fadeOut = new DoubleAnimation(0.5, 0, TimeSpan.FromSeconds(0.3));
+            fadeOut.Completed += (s, e) => Overlay.Visibility = Visibility.Collapsed;
+            Overlay.BeginAnimation(UIElement.OpacityProperty, fadeOut);
+            Label1.Visibility=Visibility.Visible;
+            TextBlock_Numere.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFFFFF"));
+            isGridVisible2 = false;
+        }
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            if (isGridVisible && !Memory_Grid.IsMouseOver)
+            if (isGridVisible)
             {
                 HideGridAnimation();
-                Scoll.Visibility = Visibility.Hidden;
+            }
+            if (isGridVisible2)
+            {
+                HideMenuAnimation();
             }
         }
         private void PopulateGrid(List<double> values) { 
@@ -247,6 +275,7 @@ namespace Calculator_VAR2
             (DataContext as Number).sum = 0;
             TextBlock_Suma.Visibility = Visibility.Hidden;
             Nr_crt=0;
+            (DataContext as Number).ecuation = "";
             isMoreThanOnce= false;
             (DataContext as Number).Nr_crt=Nr_crt;
             calculator.Reset();
@@ -273,8 +302,7 @@ namespace Calculator_VAR2
             {
                 ShowGridAnimation();
                 isGridVisible = true;
-               //Memory_Grid.Visibility=Visibility.Visible;
-                Scoll.Visibility=Visibility.Visible;
+               Scoll.Visibility=Visibility.Visible;
             }
         }
 
@@ -288,6 +316,17 @@ namespace Calculator_VAR2
             Button_mc.IsEnabled= (DataContext as Number).IsButtonEnabled;
             Button_mv.IsEnabled= (DataContext as Number).IsButtonEnabled;
 
+        }
+
+        private void ButtonMenu_Click(object sender, RoutedEventArgs e)
+        {
+            if(!isGridVisible2) { 
+               ShowMenuAnimation();
+            }
+            else
+            {
+                HideMenuAnimation();
+            }
         }
     }
 }
