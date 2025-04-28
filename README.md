@@ -1,1 +1,2 @@
 # Calculator-C#
+I developed a computer desktop application using WPF technology (.NET Framework 4.7.2), implementing a modern interface and advanced functionalities such as customized animations (with AnimationHelper), memory management (MemoryManager) and dynamic number conversions (NumberFormatConverter). I used MVVM principles to separate the interface logic, with bindings and property notifications (INotifyPropertyChanged). The application supports keyboard and mouse interactions, providing an intuitive and powerful experience.
